@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Загрузка файла</title>
+  </head>
+  <body>
+    <h2>Загрузка файла</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="fileInput" name="fileInput" />
+      <button type="button" onclick="uploadFile()">Загрузить</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+      function uploadFile() {
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:3000/upload', true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              document.getElementById('message').textContent =
+                'Файл успешно загружен!';
+            } else {
+              document.getElementById('message').textContent =
+                'Произошла ошибка при загрузке файла.';
+            }
+          }
+        };
+
+        xhr.send(formData);
+      }
+    </script>
+  </body>
+</html>
